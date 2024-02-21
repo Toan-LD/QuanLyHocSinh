@@ -8,11 +8,18 @@ import javax.swing.*;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.border.*;
 
+import GUI.GUI_HOME.PanelHome;
+import GUI.GUI_KETQUA.KetQuaGUI;
+import GUI.GUI_ONLINECOURSE.OnlineCourseGUI;
+import GUI.GUI_ONSITECOURSE.OnsiteCourseGUI;
+import GUI.GUI_PHANCONG.PhanCongGUI;
+
 public class ActivityMain extends JFrame {
 
     private JPanel pnHeader = new JPanel();
     private JPanel pnMenu = new JPanel();
     private JPanel pnContent = new JPanel();
+    private JPanel pnOnlineCourse,pnOnsiteCourse,pnPhanCong,pnKetQua;
     private ArrayList<JButton> btnMenu = new ArrayList<>();
 
     //font 
@@ -34,12 +41,10 @@ public class ActivityMain extends JFrame {
     int menu;
 
     public ActivityMain() {
-//        pnDichVu = new PanelDichVu();
-//        pnPhong = new PanelPhong();
-//        pnKhachHang = new PanelKhachHang();
-//        pnNhanVien = new PanelNhanVien();
-//        pnHoaDon = new HoaDonGUI();
-//        pnThongKe = new ThongKeGUI();
+        pnOnlineCourse = new OnlineCourseGUI();
+        pnOnsiteCourse = new OnsiteCourseGUI();
+        pnPhanCong = new PhanCongGUI();
+        pnKetQua = new KetQuaGUI();
         initComponents();
     }
 
@@ -109,13 +114,13 @@ public class ActivityMain extends JFrame {
         //set pos
         pos = btn1;
         //set action 
-//        setAction();
+        setAction();
 //        //set action mode
-//        setActionMode();
+        setActionMode();
 //        //set action logout
 //        actionLogOut();
 //        //set action zoom
-//        actionZoom();
+        actionZoom();
 
         //set layout
         setLayout(new BorderLayout(0, 0));
@@ -137,18 +142,18 @@ public class ActivityMain extends JFrame {
         //set display panel content
         menu = 0;
         setDisplayContent();
-//        addWindowListener(new WindowAdapter() {
-//            @Override
-//            public void windowClosing(WindowEvent e) {
-//                int ans = JOptionPane.showConfirmDialog(null, "Bạn có muốn thoát chương trình?", "Thông báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-//                if (ans == JOptionPane.YES_OPTION) {
-//                    new FormLogin();
-//                    dispose();
-//                } else {
-//                    setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-//                }
-//            }
-//        });
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int ans = JOptionPane.showConfirmDialog(null, "Bạn có muốn thoát chương trình?", "Thông báo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (ans == JOptionPane.YES_OPTION) {
+                    
+                    dispose();
+                } else {
+                    setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+                }
+            }
+        });
         setVisible(true);
     }
 
@@ -210,31 +215,26 @@ public class ActivityMain extends JFrame {
         pnContent.revalidate();
         pnContent.repaint();
         pnContent.setLayout(new BorderLayout());
-//        switch (menu) {
-//            case 0:
-//                JPanel a = new PanelHome(getWidth(),getHeight());
-//                pnContent.setLayout(new BorderLayout());
-//                pnContent.add(a, BorderLayout.CENTER);
-//                break;
-//            case 1:
-//                pnContent.add(pnPhong, BorderLayout.CENTER);
-//                break;
-//            case 4:
-//                pnContent.add(pnKhachHang, BorderLayout.CENTER);
-//                break;
-//            case 3:
-//                pnContent.add(pnNhanVien, BorderLayout.CENTER);
-//                break;
-//            case 2:
-//                pnContent.add(pnDichVu, BorderLayout.CENTER);
-//                break;
-//            case 5:
-//                pnContent.add(pnHoaDon, BorderLayout.CENTER);
-//                break;
-//            case 6:
-//                pnContent.add(pnThongKe,BorderLayout.CENTER);
-//                break;
-//        }
+        switch (menu) {
+            case 0:
+                JPanel a = new PanelHome(getWidth(),getHeight());
+                pnContent.setLayout(new BorderLayout());
+                pnContent.add(a, BorderLayout.CENTER);
+                break;
+            case 1:
+                pnContent.add(pnOnlineCourse, BorderLayout.CENTER);
+                break;
+            case 4:
+                pnContent.add(pnKetQua, BorderLayout.CENTER);
+                break;
+            case 3:
+                pnContent.add(pnPhanCong, BorderLayout.CENTER);
+                break;
+            case 2:
+                pnContent.add(pnOnsiteCourse, BorderLayout.CENTER);
+                break;
+            
+        }
     }
 
     public void setDisplayMenu(JPanel pnMenu) {
@@ -268,44 +268,44 @@ public class ActivityMain extends JFrame {
         pnBottom.setBorder(new EmptyBorder(5, 0, 5, 0));
     }
 
-//    public void setAction() {
-//        for (JButton x : btnMenu) {
-//            x.addActionListener(new ActionListener() {
-//                @Override
-//                public void actionPerformed(ActionEvent e) {
-//                    if (e.getSource() == btnMenu.get(0)) {
-//                        settingColor(x, "#ebf2fc", "#FFFFFF", "#98befa");
-//                        menu = 0;
-//                        setDisplayContent();
-//                    } else if (e.getSource() == btnMenu.get(1)) {
-//                        settingColor(x, "#ebf2fc", "#FFFFFF", "#98befa");
-//                        menu = 1;
-//                        setDisplayContent();
-//                    } else if (e.getSource() == btnMenu.get(2)) {
-//                        menu = 2;
-//                        setDisplayContent();
-//                        settingColor(x, "#ebf2fc", "#FFFFFF", "#98befa");
-//                    } else if (e.getSource() == btnMenu.get(3)) {
-//                        menu = 3;
-//                        setDisplayContent();
-//                        settingColor(x, "#ebf2fc", "#FFFFFF", "#98befa");
-//                    } else if (e.getSource() == btnMenu.get(4)) {
-//                        menu = 4;
-//                        setDisplayContent();
-//                        settingColor(x, "#ebf2fc", "#FFFFFF", "#98befa");
-//                    } else if (e.getSource() == btnMenu.get(5)) {
-//                        menu = 5;
-//                        setDisplayContent();
-//                        settingColor(x, "#ebf2fc", "#FFFFFF", "#98befa");
-//                    } else if (e.getSource() == btnMenu.get(6)) {
-//                        menu = 6;
-//                        setDisplayContent();
-//                        settingColor(x, "#ebf2fc", "#FFFFFF", "#98befa");
-//                    }
-//                }
-//            });
-//        }
-//    }
+    public void setAction() {
+        for (JButton x : btnMenu) {
+            x.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (e.getSource() == btnMenu.get(0)) {
+                        settingColor(x, "#ebf2fc", "#FFFFFF", "#98befa");
+                        menu = 0;
+                        setDisplayContent();
+                    } else if (e.getSource() == btnMenu.get(1)) {
+                        settingColor(x, "#ebf2fc", "#FFFFFF", "#98befa");
+                        menu = 1;
+                        setDisplayContent();
+                    } else if (e.getSource() == btnMenu.get(2)) {
+                        menu = 2;
+                        setDisplayContent();
+                        settingColor(x, "#ebf2fc", "#FFFFFF", "#98befa");
+                    } else if (e.getSource() == btnMenu.get(3)) {
+                        menu = 3;
+                        setDisplayContent();
+                        settingColor(x, "#ebf2fc", "#FFFFFF", "#98befa");
+                    } else if (e.getSource() == btnMenu.get(4)) {
+                        menu = 4;
+                        setDisplayContent();
+                        settingColor(x, "#ebf2fc", "#FFFFFF", "#98befa");
+                    } else if (e.getSource() == btnMenu.get(5)) {
+                        menu = 5;
+                        setDisplayContent();
+                        settingColor(x, "#ebf2fc", "#FFFFFF", "#98befa");
+                    } else if (e.getSource() == btnMenu.get(6)) {
+                        menu = 6;
+                        setDisplayContent();
+                        settingColor(x, "#ebf2fc", "#FFFFFF", "#98befa");
+                    }
+                }
+            });
+        }
+    }
 
     public void settingColor(JButton x, String colorLight, String colorDark, String colorPos) {
         setBackground();
