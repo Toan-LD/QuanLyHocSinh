@@ -1,3 +1,7 @@
+/*
+ * Author: Dương Thành Trưởng
+ */
+
 package GUI.GUI_HOME;
 
 import java.awt.BorderLayout;

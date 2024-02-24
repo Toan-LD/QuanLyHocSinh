@@ -1,4 +1,6 @@
-
+/*
+ * Author: Dương Thành Trưởng
+ */
 package GUI.GUI_KETQUA;
 
 import java.awt.Color;
@@ -21,7 +23,7 @@ public class CustomTableCellRenderer extends DefaultTableCellRenderer {
         // Gọi phương thức gốc để lấy Component mặc định cho ô
         Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, 0);
         String []titleTableRight= {};
-        String []titleTableCenter= {"ID Khóa Học","Chi Tiết","Chọn","Điểm Số"};
+        String []titleTableCenter= {"ID Khóa Học","Kết Quả","Điểm Số"};
         String []titleTableLeft= {"Tên Khóa Học","Họ Và Tên"};
         JLabel lb = (JLabel) c;
         lb.setBorder(new MatteBorder(0, 0, 1, 0, Color.decode("#EEEEEE")));

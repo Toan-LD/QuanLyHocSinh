@@ -19,6 +19,13 @@ public class PhanCongBUS {
 		return phanCongDAO.getAllPhanCongAfterSortingByPersonID();
 	}
 
+	public List<PhanCongDTO> getAllPhanCongAfterSortingByCourseTitle() {
+		return phanCongDAO.getAllPhanCongAfterSortingByCourseTitle();
+	}
+	public List<PhanCongDTO> getAllPhanCongAfterSortingByCourseID() {
+		return phanCongDAO.getAllPhanCongAfterSortingByCourseID();
+	}
+
 	public String addPhanCong(PhanCongDTO pDto) {
 		if (phanCongDAO.hasPhanCong(pDto.getPersonId(), pDto.getCourseId()))
 			return "Phân công đã tồn tại";

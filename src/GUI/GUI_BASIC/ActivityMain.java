@@ -1,3 +1,7 @@
+/*
+ * Author: Dương Thành Trưởng
+ */
+
 package GUI.GUI_BASIC;
 
 
@@ -12,6 +16,7 @@ import GUI.GUI_HOME.PanelHome;
 import GUI.GUI_KETQUA.KetQuaGUI;
 import GUI.GUI_ONLINECOURSE.OnlineCourseGUI;
 import GUI.GUI_ONSITECOURSE.OnsiteCourseGUI;
+import GUI.GUI_ONSITECOURSE.jpnOnsite;
 import GUI.GUI_PHANCONG.PhanCongGUI;
 
 public class ActivityMain extends JFrame {
@@ -42,7 +47,7 @@ public class ActivityMain extends JFrame {
 
     public ActivityMain() {
         pnOnlineCourse = new OnlineCourseGUI();
-        pnOnsiteCourse = new OnsiteCourseGUI();
+        pnOnsiteCourse = new jpnOnsite();
         pnPhanCong = new PhanCongGUI();
         pnKetQua = new KetQuaGUI();
         initComponents();

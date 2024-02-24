@@ -11,7 +11,7 @@ import java.util.List;
 import DTO.PersonDTO;
 import DTO.PhanCongDTO;
 import DTO.courseDTO;
-import Interface.PhanCongIDAO;
+import DAO.PhanCongIDAO;
 
 //SELECT c.*, p.*
 //FROM courseinstructor ci
@@ -99,6 +99,64 @@ public class PhanCongDAO implements PhanCongIDAO {
 
 		Connection connection = ConnectDB.getConnection();
 		String sqlQueryString = "SELECT c.*, p.* FROM courseinstructor ci JOIN course c ON ci.courseID = c.courseID JOIN person p ON ci.personID = p.personID ORDER BY p.PersonID ASC";
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(sqlQueryString);
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+				int courseID = resultSet.getInt("CourseID");
+				int personID = resultSet.getInt("PersonID");
+				System.out.println("CourseID: " + courseID + ", PersonID: " + personID);
+
+				PhanCongDTO pDto = new PhanCongDTO(courseID, personID);
+				listPhanCongDTOs.add(pDto);
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			ConnectDB.closeConnection(connection);
+		}
+
+		return listPhanCongDTOs;
+	}
+
+	@Override
+	public List<PhanCongDTO> getAllPhanCongAfterSortingByCourseTitle() {
+		List<PhanCongDTO> listPhanCongDTOs = new ArrayList<PhanCongDTO>();
+
+		Connection connection = ConnectDB.getConnection();
+		String sqlQueryString = "SELECT c.*, p.* FROM courseinstructor ci JOIN course c ON ci.courseID = c.courseID JOIN person p ON ci.personID = p.personID ORDER BY c.Title ASC";
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(sqlQueryString);
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+				int courseID = resultSet.getInt("CourseID");
+				int personID = resultSet.getInt("PersonID");
+				System.out.println("CourseID: " + courseID + ", PersonID: " + personID);
+
+				PhanCongDTO pDto = new PhanCongDTO(courseID, personID);
+				listPhanCongDTOs.add(pDto);
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			ConnectDB.closeConnection(connection);
+		}
+
+		return listPhanCongDTOs;
+	}
+
+	@Override
+	public List<PhanCongDTO> getAllPhanCongAfterSortingByCourseID() {
+		List<PhanCongDTO> listPhanCongDTOs = new ArrayList<PhanCongDTO>();
+
+		Connection connection = ConnectDB.getConnection();
+		String sqlQueryString = "SELECT c.*, p.* FROM courseinstructor ci JOIN course c ON ci.courseID = c.courseID JOIN person p ON ci.personID = p.personID ORDER BY c.CourseID ASC";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sqlQueryString);
 			ResultSet resultSet = preparedStatement.executeQuery();

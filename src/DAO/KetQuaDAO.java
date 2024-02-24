@@ -123,6 +123,12 @@ public class KetQuaDAO implements DaoInterface<KetQuaDTO>{
             	t.add(rs.getString(2));
             	t.add(rs.getString(4)+" "+rs.getString(3));
             	t.add(rs.getFloat(5)+"");
+            	if(rs.getFloat(5)>=1) {
+            		t.add("Đạt");
+            	}
+            	else {
+            		t.add("Không Đạt");
+            	}
                 vec.add(t);
             }
             con.close();
@@ -138,6 +144,98 @@ public class KetQuaDAO implements DaoInterface<KetQuaDTO>{
 	public KetQuaDTO getById(String id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public Vector<String> getListCourse() {
+		Vector<String> list=new Vector<>();
+		try {
+            Connection con = new ConnectDB().getConnection();
+            String sql = "SELECT courseid, title FROM course";
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+            	String course = "";
+                course=rs.getInt(1)+" - "+rs.getString(2);
+                
+                list.add(course);
+            }
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+
+        }
+		
+		return list;
+		
+	}
+	public Vector<String> getListStudent() {
+		Vector<String> list=new Vector<>();
+		try {
+            Connection con = new ConnectDB().getConnection();
+            String sql = "SELECT DISTINCT studentgrade.studentid, person.lastname, person.firstname " +
+                    "FROM studentgrade " +
+                    "INNER JOIN person ON studentgrade.studentid = person.personid";
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+            	String course = "";
+                course=rs.getInt(1)+" - "+rs.getString(2)+" "+rs.getString(3);
+                
+                list.add(course);
+            }
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+
+        }
+		
+		return list;
+		
+	}
+	public int getIdbyFullName(String fullName) {
+		int id=0;
+		String firstname=fullName.split(" ")[1];
+		String lastname=fullName.split(" ")[0];
+		try {
+            Connection con = new ConnectDB().getConnection();
+            String sql = "SELECT personid " +
+                    "FROM person " +
+                    "WHERE firstname='"+firstname+"' and lastname='"+lastname+"';";
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+            	id=rs.getInt(1);
+            }
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return 0;
+
+        }
+		return id;
+	}
+	
+	public String getTeacherNameByCourseId(int courseId) {
+		String name="";
+		try {
+            Connection con = new ConnectDB().getConnection();
+            String sql = "SELECT person.lastname, person.firstname " +
+                    "FROM courseinstructor INNER JOIN person ON courseinstructor.personid = person.personid " +
+                    "WHERE courseid ="+courseId+";";
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+            	name=rs.getString(1)+" "+rs.getString(2);
+            }
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return "";
+
+        }
+		return name;
 	}
 
 }
