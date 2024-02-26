@@ -344,6 +344,7 @@ public class KetQuaGUI extends JPanel {
                         // Thực hiện hành động khi người dùng chọn OK
                         int row=tbMain.getSelectedRow();
                         if(row<0) {
+                        	new ThongBaoDialog("Chọn dòng để xem", ThongBaoDialog.INFO_DIALOG);
                         	return;
                         }
 //                        System.out.println(row);
@@ -398,7 +399,7 @@ public class KetQuaGUI extends JPanel {
 				// TODO Auto-generated method stub
 				int row=tbMain.getSelectedRow();
 				if(row<0) {
-					new ThongBaoDialog("Chọn dòng cần sửa", ThongBaoDialog.ERROR_DIALOG);
+					new ThongBaoDialog("Chọn dòng cần sửa", ThongBaoDialog.INFO_DIALOG);
 					return;
 				}
 				String course= tbMain.getValueAt(row, 0)+" - "+tbMain.getValueAt(row, 1);
@@ -418,7 +419,7 @@ public class KetQuaGUI extends JPanel {
 				// TODO Auto-generated method stub
 				int row=tbMain.getSelectedRow();
 				if(row<0) {
-					new ThongBaoDialog("Chưa chọn dòng", ThongBaoDialog.ERROR_DIALOG);
+					new ThongBaoDialog("Chưa chọn dòng", ThongBaoDialog.INFO_DIALOG);
 					return;
 				}
 			}

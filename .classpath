@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="src/LIB/mssql-jdbc-11.2.1.jre11.jar"/>
 	<classpathentry kind="lib" path="src/LIB/mssql-jdbc-11.2.1.jre18.jar"/>
 	<classpathentry kind="lib" path="src/LIB/mysql-connector-java-8.0.30.jar"/>
+	<classpathentry kind="lib" path="src/LIB/jcalendar-1.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

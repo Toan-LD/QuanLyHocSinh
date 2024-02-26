@@ -1,6 +1,7 @@
 package GUI.GUI_ONLINECOURSE;
 
 
+
 import java.awt.BorderLayout;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -28,6 +29,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import BUS.OnlineCourseBUS;
@@ -38,8 +40,11 @@ public class OnlineCourseGUI extends JPanel{
 	private Font fontSubTittle = new Font("Tahoma", Font.BOLD, 20);
 	private Font fontbtn = new Font("Tahoma",Font.PLAIN, 13);
 	private Font fontTable = new Font("Segoe UI", Font.BOLD, 13);
+	
+	private Color texfieldColor = new Color(45, 52, 54);
 	private DefaultTableModel model;
 	private JTable listCourse;
+	
 	
 	public OnlineCourseGUI() {
 		unitGUI();
@@ -50,6 +55,7 @@ public class OnlineCourseGUI extends JPanel{
 		setVisible(true);
 		JLabel lbTitle = new JLabel("KHOÁ HỌC ONLINE");
 		JPanel pnTitle = new JPanel();
+		pnTitle.setBackground(Color.WHITE);
 		lbTitle.setFont(fontSubTittle);
 		pnTitle.add(lbTitle);
 		pnTitle.setPreferredSize(new Dimension(0, 80));
@@ -58,6 +64,7 @@ public class OnlineCourseGUI extends JPanel{
 		JPanel footer=new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		
 		JButton btnThem=new JButton("Thêm");
+		btnThem.setBackground(Color.decode("#ebf2fc"));
 		btnThem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -130,6 +137,7 @@ public class OnlineCourseGUI extends JPanel{
         		
         		JPanel pnBottom= new JPanel(new FlowLayout(FlowLayout.CENTER));
         		JButton btnAccept=new JButton("Xác nhận");
+        		btnAccept.setBackground(Color.decode("#ebf2fc"));
         		btnAccept.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -144,6 +152,8 @@ public class OnlineCourseGUI extends JPanel{
                     }
         		});
         		JButton btnDeny=new JButton("Huỷ");
+        		btnDeny.setBackground(Color.decode("#ebf2fc"));
+        		btnDeny.setFont(fontbtn);
         		btnDeny.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -170,6 +180,7 @@ public class OnlineCourseGUI extends JPanel{
 		btnThem.setBackground(Color.BLACK);
 		
 		JButton btnXoa=new JButton("Xoá");
+		btnXoa.setBackground(Color.decode("#ebf2fc"));
 		btnXoa.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -189,6 +200,8 @@ public class OnlineCourseGUI extends JPanel{
 		btnXoa.setBackground(Color.BLACK);
 		
 		JButton btnSua=new JButton("Sửa");
+		btnSua.setBackground(Color.decode("#ebf2fc"));
+		btnSua.setFont(fontbtn);
 		btnSua.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -310,21 +323,25 @@ public class OnlineCourseGUI extends JPanel{
 		btnSua.setBackground(Color.LIGHT_GRAY);
 		
 		
+		footer.setBackground(Color.WHITE);
 		footer.add(btnThem);
 		footer.add(btnSua);
 		footer.add(btnXoa);
 		
 		JPanel search=new JPanel(new FlowLayout(FlowLayout.LEFT));
- 		JLabel lbsearch=new JLabel("Tim kiem:");
+		search.setBackground(Color.WHITE);
+ 		JLabel lbsearch=new JLabel("Tìm kiếm");
  		JTextField txtSearch=new JTextField();
+ 		txtSearch.setBackground(texfieldColor);
  		txtSearch.setPreferredSize(new Dimension(250, 30));
  		
  		String[] Choise = {"All","CourseID", "Title", "DepartmentID", "Url", "Credit"};
 
-        // Tạo JComboBox với dữ liệu mảng fruits
         JComboBox<String> comboBox = new JComboBox<>(Choise);
         
-        JButton accept=new JButton("Tim");
+        JButton accept=new JButton("Tìm");
+        accept.setBackground(Color.decode("#ebf2fc"));
+        accept.setFont(fontbtn);
         accept.setPreferredSize(new Dimension(120, 30));
         accept.addActionListener(new ActionListener() {
             @Override
@@ -465,7 +482,8 @@ public class OnlineCourseGUI extends JPanel{
                              }
                  		});
                  		btnDeny.setPreferredSize(new Dimension(100, 40));
-                 		
+                 		btnDeny.setBackground(Color.decode("#ebf2fc"));
+                 		btnDeny.setFont(fontbtn);
                  		pnBottom.add(btnDeny);
                  		
                  		
@@ -517,4 +535,3 @@ public class OnlineCourseGUI extends JPanel{
 	
 
 }
-
