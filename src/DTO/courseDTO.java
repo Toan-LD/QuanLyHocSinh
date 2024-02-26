@@ -1,10 +1,15 @@
 package DTO;
 
+import BUS.DepartmentBUS;
+
 public class courseDTO {
 	private int id;
 	private String tittle;
 	private int credits;
 	private int maKhoa;
+        private DepartmentDTO departmentName;
+        
+        DepartmentBUS depBUS=new DepartmentBUS();
 	
 	public courseDTO() {
 	}
@@ -14,6 +19,7 @@ public class courseDTO {
 		this.tittle = tittle;
 		this.credits = credits;
 		this.maKhoa = maKhoa;
+                this.departmentName=depBUS.findById(maKhoa);
 	}
 
 	public int getId() {
@@ -47,6 +53,15 @@ public class courseDTO {
 	public void setMaKhoa(int maPhong) {
 		this.maKhoa = maPhong;
 	}
+
+    public DepartmentDTO getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(DepartmentDTO departmentName) {
+        this.departmentName = departmentName;
+    }
+        
 	
 	
 }

@@ -39,7 +39,23 @@ public class OnlineCourseBUS implements iBUS<OnlineCourseDTO>{
 		return "Mã không được tìm thấy";
 	}
 	
-	public List<OnlineCourseDTO> findByCondition(String condition,String con2){
-		return OlDAO.findByCondition(condition,con2);
+	public List<OnlineCourseDTO> findByUrl(String condition){
+		return OlDAO.findByUrl(condition);
+	}
+        
+        public List<OnlineCourseDTO> findByDepartment(String condition){
+		return OlDAO.findByDepartment(condition);
+	}
+        
+        public List<OnlineCourseDTO> findByTitle(String condition){
+		return OlDAO.findByTitle(condition);
+	}
+        
+        public List<OnlineCourseDTO> findByCredits(String condition){
+		return OlDAO.findByCredits(condition);
+	}
+        
+        public List<OnlineCourseDTO> findByCourseID(String condition){
+		return OlDAO.findByCourseID(condition);
 	}
 }

@@ -2,9 +2,14 @@ package GUI.GUI_ONLINECOURSE;
 
 
 
+import BUS.DepartmentBUS;
 import java.awt.BorderLayout;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.plaf.basic.BasicComboBoxUI;
+import javax.swing.plaf.basic.BasicComboPopup;
+import javax.swing.plaf.basic.ComboPopup;
+
 import java.awt.Color;
 import java.awt.FlowLayout;
 import javax.swing.JScrollPane;
@@ -17,8 +22,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -29,21 +37,61 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import BUS.OnlineCourseBUS;
+import DTO.DepartmentDTO;
 import DTO.OnlineCourseDTO;
+import java.util.ArrayList;
+import javax.swing.JDialog;
+//import GUI.GUI_BASIC.CustomTableCellRenderer;
 
 public class OnlineCourseGUI extends JPanel{
 	OnlineCourseBUS olBUS= new OnlineCourseBUS();
-	private Font fontSubTittle = new Font("Tahoma", Font.BOLD, 20);
+        DepartmentBUS depBUS=new DepartmentBUS();
+//	private Font fontSubTittle = new Font("Tahoma", Font.BOLD, 20);
 	private Font fontbtn = new Font("Tahoma",Font.PLAIN, 13);
-	private Font fontTable = new Font("Segoe UI", Font.BOLD, 13);
+//	private Font fontTable = new Font("Segoe UI", Font.BOLD, 13);
 	
-	private Color texfieldColor = new Color(45, 52, 54);
+//	private Color texfieldColor = new Color(45, 52, 54);
 	private DefaultTableModel model;
 	private JTable listCourse;
+	private JScrollPane listOnlineCourse;
+	private JComboBox<String> comboBox;
+	private JTextField txtid;
+	private JButton btnAccept,btnThem,btnXoa,btnSua;
+	
+//	FORMAT
+	private Font sgUI15 = new Font("Segoe UI", Font.BOLD, 15);
+	private Font sgUI15p = new Font("Segoe UI", Font.PLAIN, 15);
+	private Font sgUI15I = new Font("Segoe UI", Font.ITALIC, 15);
+	private Font sgUI13 = new Font("Segoe UI", Font.PLAIN, 13);
+	private Font sgUI13I = new Font("Segoe UI", Font.ITALIC, 13);
+	private Font sgUI13b = new Font("Segoe UI", Font.BOLD, 13);
+	private Font sgUI18b = new Font("Segoe UI", Font.BOLD, 17);
+	private Font tNR13 = new Font("Times New Roman", Font.ITALIC, 13);
+	private Font fontTittle = new Font("Tahoma", Font.BOLD, 25);
+	private Font fontSubTittle = new Font("Tahoma", Font.BOLD, 20);
+	private Font fontTable = new Font("Segoe UI", Font.BOLD, 13);
+	private DecimalFormat dcf = new DecimalFormat("###,###");
+	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	private Color btnoldColor = new Color(52, 152, 219);
+	private Color texfieldColor = new Color(45, 52, 54);
+	private String colorTableCode = "#dee9fc";
+	MatteBorder matteBorderCB = new MatteBorder(2, 2, 2, 2, Color.decode("#EFEFEF"));
+	LineBorder lineCB = new LineBorder(Color.white);
+	MatteBorder matteBorderCBDark = new MatteBorder(2, 2, 2, 2, Color.decode("#919191"));
+	MatteBorder borderTxt = new MatteBorder(2, 2, 2, 2, Color.decode("#EFEFEF"));
+	MatteBorder borderTxtDark = new MatteBorder(2, 2, 2, 2, Color.decode("#919191"));
+	EmptyBorder emptyBorderTxt = new EmptyBorder(0, 7, 0, 7);
+	EmptyBorder emptyBorderCB = new EmptyBorder(0, 7, 0, 0);
+
 	
 	
 	public OnlineCourseGUI() {
@@ -59,16 +107,23 @@ public class OnlineCourseGUI extends JPanel{
 		lbTitle.setFont(fontSubTittle);
 		pnTitle.add(lbTitle);
 		pnTitle.setPreferredSize(new Dimension(0, 80));
-		JScrollPane listOnlineCourse =tblistCourse();
+		listOnlineCourse =tblistCourse();
 		
 		JPanel footer=new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		
-		JButton btnThem=new JButton("Thêm");
+		btnThem=new JButton("Thêm");
+//		ImageIcon iconSearch = new ImageIcon(new ImageIcon(getClass().getResource("/GUI/assets/searchIcon.png"))
+//				.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+//		btnThem.setIcon(iconSearch);
+		btnThem.setFont(sgUI13b);
+		btnThem.setFocusPainted(false);
+		btnThem.setBorderPainted(false);
+//		btnThem.setBackground(Color.decode("#ebf2fc"))
 		btnThem.setBackground(Color.decode("#ebf2fc"));
 		btnThem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	JFrame frame=new JFrame();
+                        JDialog frame=new JDialog();
         		frame.setLayout(new BorderLayout());
         		
         		frame.setVisible(true);
@@ -82,7 +137,12 @@ public class OnlineCourseGUI extends JPanel{
         		JLabel lbid=new JLabel("ID");
         		lbid.setPreferredSize(new Dimension(80, 30));
         		JTextField txtid=new JTextField();
-        		txtid.setPreferredSize(new Dimension(180, 30));
+//        		txtid.setPreferredSize(new Dimension(180, 30));
+        		txtid.setPreferredSize(new Dimension(200, 30));
+        		txtid.setFont(sgUI13);
+        		txtid.setBorder(BorderFactory.createCompoundBorder(borderTxt, new EmptyBorder(0, 3, 0, 3)));
+        		txtid.setForeground(Color.black);
+
         		pnID.add(lbid);
         		pnID.add(txtid);
         		
@@ -97,10 +157,16 @@ public class OnlineCourseGUI extends JPanel{
         		JPanel pnMK=new JPanel(new FlowLayout(FlowLayout.LEFT));
         		JLabel lbMK=new JLabel("DepartmentID");
         		lbMK.setPreferredSize(new Dimension(80, 30));
-        		JTextField txtMK=new JTextField();
-        		txtMK.setPreferredSize(new Dimension(180, 30));
+        		
+                        List<DepartmentDTO> options=depBUS.findAll();
+                        String[] name = new String[options.size()];
+                        for (int i = 0; i < options.size(); i++) {
+                            name[i] = options.get(i).getName();
+                        }
+                        JComboBox<String> opMK=new JComboBox<>(name);
+        		opMK.setPreferredSize(new Dimension(180, 30));
         		pnMK.add(lbMK);
-        		pnMK.add(txtMK);
+        		pnMK.add(opMK);
         		
         		JPanel pnCre=new JPanel(new FlowLayout(FlowLayout.LEFT));
         		JLabel lbCre=new JLabel("Credits");
@@ -137,13 +203,20 @@ public class OnlineCourseGUI extends JPanel{
         		
         		JPanel pnBottom= new JPanel(new FlowLayout(FlowLayout.CENTER));
         		JButton btnAccept=new JButton("Xác nhận");
+        		ImageIcon iconSearch = new ImageIcon(new ImageIcon(getClass().getResource("/GUI/assets/searchIcon.png"))
+        				.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+        		btnAccept.setIcon(iconSearch);
+        		btnAccept.setFont(sgUI13b);
+        		btnAccept.setFocusPainted(false);
+        		btnAccept.setBorderPainted(false);
         		btnAccept.setBackground(Color.decode("#ebf2fc"));
         		btnAccept.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                     	int id=Integer.parseInt(txtid.getText());
                     	String name=txtTitle.getText();
-                    	int dpid=Integer.parseInt(txtMK.getText());
+                        DepartmentDTO depa=findDepartmentByName(options,String.valueOf(opMK.getSelectedItem()));
+                    	int dpid=depa.getDepartmentID();
                     	int cre=Integer.parseInt(txtCre.getText());
                     	String url=txtUrl.getText();
                     	OnlineCourseDTO onl= new OnlineCourseDTO(id,name,cre,dpid,url);
@@ -160,7 +233,7 @@ public class OnlineCourseGUI extends JPanel{
                     	frame.dispose();
                     }
         		});
-        		btnAccept.setPreferredSize(new Dimension(100, 40));
+//        		btnAccept.setPreferredSize(new Dimension(100, 40));
         		btnDeny.setPreferredSize(new Dimension(100, 40));
         		
         		pnBottom.add(btnAccept);
@@ -173,13 +246,13 @@ public class OnlineCourseGUI extends JPanel{
         		frame.add(pnBottom,BorderLayout.SOUTH);
             }
 		});
-		btnThem.setFont(fontbtn);
-		btnThem.setPreferredSize(new Dimension(100, 40));
+//		btnThem.setFont(fontbtn);
+//		btnThem.setPreferredSize(new Dimension(100, 40));
 		ImageIcon iconPlus= new ImageIcon(new ImageIcon(getClass().getResource("/GUI/assets/plus2.png")).getImage().getScaledInstance(18, 18, Image.SCALE_SMOOTH));
 		btnThem.setIcon(iconPlus);
-		btnThem.setBackground(Color.BLACK);
+//		btnThem.setBackground(Color.BLACK);
 		
-		JButton btnXoa=new JButton("Xoá");
+		btnXoa=new JButton("Xoá");
 		btnXoa.setBackground(Color.decode("#ebf2fc"));
 		btnXoa.addActionListener(new ActionListener() {
             @Override
@@ -194,18 +267,26 @@ public class OnlineCourseGUI extends JPanel{
             }
 		});
 		btnXoa.setFont(fontbtn);
-		btnXoa.setPreferredSize(new Dimension(100, 40));
+		
 		ImageIcon iconXoa= new ImageIcon(new ImageIcon(getClass().getResource("/GUI/assets/trash.png")).getImage().getScaledInstance(18, 18, Image.SCALE_SMOOTH));
 		btnXoa.setIcon(iconXoa);
-		btnXoa.setBackground(Color.BLACK);
+//		ImageIcon iconSearch = new ImageIcon(new ImageIcon(getClass().getResource("/GUI/assets/searchIcon.png"))
+//				.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+//		btnAccept.setIcon(iconSearch);
+		btnXoa.setFont(sgUI13b);
+		btnXoa.setFocusPainted(false);
+		btnXoa.setBorderPainted(false);
+		btnXoa.setBackground(Color.decode("#ebf2fc"));
 		
-		JButton btnSua=new JButton("Sửa");
+		btnSua=new JButton("Sửa");
+		btnSua.setFont(sgUI13b);
+		btnSua.setFocusPainted(false);
+		btnSua.setBorderPainted(false);
 		btnSua.setBackground(Color.decode("#ebf2fc"));
-		btnSua.setFont(fontbtn);
 		btnSua.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	JFrame frame=new JFrame();
+            	JDialog frame=new JDialog();
         		frame.setLayout(new BorderLayout());
         		
         		int selectedRow=listCourse.getSelectedRow();
@@ -239,12 +320,17 @@ public class OnlineCourseGUI extends JPanel{
         		
         		JPanel pnMK=new JPanel(new FlowLayout(FlowLayout.LEFT));
         		JLabel lbMK=new JLabel("DepartmentID");
+                        List<DepartmentDTO> options=depBUS.findAll();
+                        String[] name = new String[options.size()];
+                        for (int i = 0; i < options.size(); i++) {
+                            name[i] = options.get(i).getName();
+                        }
+                        JComboBox<String> opMK=new JComboBox<>(name);
         		lbMK.setPreferredSize(new Dimension(100, 30));
-        		JTextField txtMK=new JTextField();
-        		txtMK.setText(String.valueOf(onl.getMaKhoa()));
-        		txtMK.setPreferredSize(new Dimension(180, 30));
+        		opMK.setSelectedItem(onl.getDepartmentName().getName());
+        		opMK.setPreferredSize(new Dimension(180, 30));
         		pnMK.add(lbMK);
-        		pnMK.add(txtMK);
+        		pnMK.add(opMK);
         		
         		JPanel pnCre=new JPanel(new FlowLayout(FlowLayout.LEFT));
         		JLabel lbCre=new JLabel("Credits");
@@ -282,13 +368,14 @@ public class OnlineCourseGUI extends JPanel{
         		pnL.setPreferredSize(new Dimension(50, 0));
         		
         		JPanel pnBottom= new JPanel(new FlowLayout(FlowLayout.CENTER));
-        		JButton btnAccept=new JButton("Xác nhận");
+        		btnAccept=new JButton("Xác nhận");
         		btnAccept.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                     	int id=Integer.parseInt(txtid.getText());
                     	String name=txtTitle.getText();
-                    	int dpid=Integer.parseInt(txtMK.getText());
+                        DepartmentDTO depa=findDepartmentByName(options,String.valueOf(opMK.getSelectedItem()));
+                    	int dpid=depa.getDepartmentID();
                     	int cre=Integer.parseInt(txtCre.getText());
                     	String url=txtUrl.getText();
                     	OnlineCourseDTO onl= new OnlineCourseDTO(id,name,cre,dpid,url);
@@ -316,11 +403,8 @@ public class OnlineCourseGUI extends JPanel{
         		frame.add(pnBottom,BorderLayout.SOUTH);
             }
 		});
-		btnSua.setFont(fontbtn);
-		btnSua.setPreferredSize(new Dimension(100, 40));
 		ImageIcon iconSua= new ImageIcon(new ImageIcon(getClass().getResource("/GUI/assets/pencil.png")).getImage().getScaledInstance(18, 18, Image.SCALE_SMOOTH));
 		btnSua.setIcon(iconSua);
-		btnSua.setBackground(Color.LIGHT_GRAY);
 		
 		
 		footer.setBackground(Color.WHITE);
@@ -332,23 +416,41 @@ public class OnlineCourseGUI extends JPanel{
 		search.setBackground(Color.WHITE);
  		JLabel lbsearch=new JLabel("Tìm kiếm");
  		JTextField txtSearch=new JTextField();
- 		txtSearch.setBackground(texfieldColor);
- 		txtSearch.setPreferredSize(new Dimension(250, 30));
+ 		txtSearch.setPreferredSize(new Dimension(200, 30));
+ 		txtSearch.setFont(sgUI13);
+ 		txtSearch.setBorder(BorderFactory.createCompoundBorder(borderTxt, new EmptyBorder(0, 3, 0, 3)));
+ 		txtSearch.setForeground(Color.black);
  		
- 		String[] Choise = {"All","CourseID", "Title", "DepartmentID", "Url", "Credit"};
+ 		String[] Choise = {"All","CourseID", "Title", "Department", "Url", "Credits"};
 
-        JComboBox<String> comboBox = new JComboBox<>(Choise);
+        comboBox = new JComboBox<>(Choise);
+        comboBox.setBorder(new MatteBorder(2, 2, 2, 0, Color.decode("#EFEFEF")));
+        comboBox.setBackground(Color.white);
+        comboBox.setFont(sgUI13);
+        comboBox.setPreferredSize(new Dimension(200, 30));
+        comboBox.setUI(new BasicComboBoxUI() {
+			@Override
+			protected ComboPopup createPopup() {
+				BasicComboPopup basicComboPopup = new BasicComboPopup(comboBox);
+				basicComboPopup.setBorder(lineCB);
+				return basicComboPopup;
+			}
+		});
+        comboBox.setBorder(matteBorderCB);
         
         JButton accept=new JButton("Tìm");
+        ImageIcon iconSearch = new ImageIcon(new ImageIcon(getClass().getResource("/GUI/assets/searchIcon.png"))
+				.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+        accept.setIcon(iconSearch);
+        accept.setFont(sgUI13b);
+        accept.setFocusPainted(false);
+        accept.setBorderPainted(false);
         accept.setBackground(Color.decode("#ebf2fc"));
-        accept.setFont(fontbtn);
-        accept.setPreferredSize(new Dimension(120, 30));
         accept.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	System.out.println(String.valueOf(comboBox.getSelectedItem()));
-            	System.out.println(txtSearch.getText());
-            	search(String.valueOf(comboBox.getSelectedItem()),txtSearch.getText());
+                System.out.println(txtSearch.getText());
+            	searchByCondition(txtSearch.getText());
             	txtSearch.setText("");
             }
         });
@@ -380,10 +482,36 @@ public class OnlineCourseGUI extends JPanel{
         
         List<OnlineCourseDTO> list= olBUS.findAll();
         for(OnlineCourseDTO course:list) {
-        	Object[] duLieu = {course.getId(),course.getTittle(),course.getMaKhoa(),course.getCredits(),course.getUrl()};
+        	Object[] duLieu = {course.getId(),course.getTittle(),course.getDepartmentName().getName(),course.getCredits(),course.getUrl()};
         	model.addRow(duLieu);
         }
         listCourse = new JTable(model);
+        listOnlineCourse = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        listOnlineCourse.setBorder(BorderFactory.createEmptyBorder());
+        listOnlineCourse.setViewportView(listCourse);
+        listOnlineCourse.getViewport().setBackground(Color.white);
+        listCourse.getTableHeader().setBackground(Color.decode(colorTableCode));
+//		renderTB(listCourse);
+//		renderData(tbMain);
+        listOnlineCourse.setViewportBorder(null);
+
+		listCourse.setShowGrid(false);
+		listCourse.setIntercellSpacing(new Dimension(0, 0));
+		TableCellRenderer renderer = new TableCellRendererOnlineCourse();
+		for (int i = 0; i < listCourse.getColumnCount(); i++) {
+			listCourse.getColumnModel().getColumn(i).setCellRenderer(renderer);
+		}
+		listCourse.setRowHeight(35);
+		listCourse.getTableHeader().setPreferredSize(new Dimension(1, 30));
+		listCourse.getTableHeader().setFont(fontTable);
+		listCourse.getTableHeader().setBorder(null);
+		listCourse.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listCourse.getColumnModel().getColumn(0).setPreferredWidth(50);
+
+		listCourse.getColumnModel().getColumn(1).setPreferredWidth(200);
+		listCourse.getColumnModel().getColumn(2).setPreferredWidth(50);
+		listCourse.getColumnModel().getColumn(3).setPreferredWidth(50);
+		listCourse.getColumnModel().getColumn(4).setPreferredWidth(200);
         for (int i = 0; i < listCourse.getColumnCount(); i++) {
             listCourse.getColumnModel().getColumn(i).setCellEditor(null);
         }
@@ -393,7 +521,7 @@ public class OnlineCourseGUI extends JPanel{
             	 if (e.getClickCount() == 2) { // Kiểm tra double click
                      int selectedRow = listCourse.getSelectedRow();
                      if (selectedRow != -1) {
-                    	 JFrame frame=new JFrame();
+                    	 JDialog frame=new JDialog();
                  		frame.setLayout(new BorderLayout());
                  		int value=(Integer)model.getValueAt(selectedRow, getColumnIndex("ID"));
                  		OnlineCourseDTO onl=olBUS.findById(value);
@@ -507,17 +635,37 @@ public class OnlineCourseGUI extends JPanel{
         model.setRowCount(0); // Xóa tất cả dòng trong mô hình
         List<OnlineCourseDTO> list = olBUS.findAll();
         for (OnlineCourseDTO course : list) {
-            Object[] duLieu = {course.getId(), course.getTittle(), course.getMaKhoa(), course.getCredits(), course.getUrl()};
+            Object[] duLieu = {course.getId(), course.getTittle(), course.getDepartmentName().getName(), course.getCredits(), course.getUrl()};
             model.addRow(duLieu);
         }
     }
 	
-	private void search(String a,String b) {
-        model.setRowCount(0); // Xóa tất cả dòng trong mô hình
-        List<OnlineCourseDTO> list = olBUS.findByCondition(a,b);
+	private void searchByCondition(String condition) {
+        model.setRowCount(0);
+        List<OnlineCourseDTO> list=new ArrayList();
+        System.out.println(comboBox.getSelectedItem());
+        String choise=String.valueOf(comboBox.getSelectedItem());// Xóa tất cả dòng trong mô hình
+        if(choise.equalsIgnoreCase("Url")){
+            list=olBUS.findByUrl(condition);
+        }
+        else if(choise.equalsIgnoreCase("CourseID")){
+            list=olBUS.findByCourseID(condition);
+        }
+        else if(choise.equalsIgnoreCase("Department")){
+            list=olBUS.findByDepartment(condition);
+        }
+        else if(choise.equalsIgnoreCase("Credits")){
+            list=olBUS.findByCredits(condition);
+        }
+        else if(choise.equalsIgnoreCase("Title")){
+            list=olBUS.findByTitle(condition);
+        }
+        else {
+            list=olBUS.findAll();
+        }
         if(list!=null) {
 	        for (OnlineCourseDTO course : list) {
-	            Object[] duLieu = {course.getId(), course.getTittle(), course.getMaKhoa(), course.getCredits(), course.getUrl()};
+	            Object[] duLieu = {course.getId(), course.getTittle(), course.getDepartmentName().getName(), course.getCredits(), course.getUrl()};
 	            model.addRow(duLieu);
 	        }
         }
@@ -532,6 +680,15 @@ public class OnlineCourseGUI extends JPanel{
         }
         return -1;
     }
+        
+        public DepartmentDTO findDepartmentByName(List<DepartmentDTO> departmentList, String targetName) {
+    for (DepartmentDTO department : departmentList) {
+        if (department.getName().equals(targetName)) {
+            return department; // Trả về đối tượng khi tìm thấy
+        }
+    }
+    return null; // Trả về null nếu không tìm thấy
+}
 	
 
 }

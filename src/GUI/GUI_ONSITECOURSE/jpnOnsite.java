@@ -8,21 +8,36 @@ import BUS.OnsiteCourseService;
 import BUS.OnsiteCourseServiceImpl;
 import DAO.ConnectDB;
 import DTO.OnsiteCourseDTO;
+import GUI.GUI_KETQUA.CustomTableCellRenderer;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -33,6 +48,30 @@ import javax.swing.table.TableRowSorter;
 public class jpnOnsite extends javax.swing.JPanel {
     
 
+//	FORMAT
+	private Font sgUI15 = new Font("Segoe UI", Font.BOLD, 15);
+	private Font sgUI15p = new Font("Segoe UI", Font.PLAIN, 15);
+	private Font sgUI15I = new Font("Segoe UI", Font.ITALIC, 15);
+	private Font sgUI13 = new Font("Segoe UI", Font.PLAIN, 13);
+	private Font sgUI13I = new Font("Segoe UI", Font.ITALIC, 13);
+	private Font sgUI13b = new Font("Segoe UI", Font.BOLD, 13);
+	private Font sgUI18b = new Font("Segoe UI", Font.BOLD, 17);
+	private Font tNR13 = new Font("Times New Roman", Font.ITALIC, 13);
+	private Font fontTittle = new Font("Tahoma", Font.BOLD, 25);
+	private Font fontSubTittle = new Font("Tahoma", Font.BOLD, 20);
+	private Font fontTable = new Font("Segoe UI", Font.BOLD, 13);
+	private DecimalFormat dcf = new DecimalFormat("###,###");
+	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	private Color btnoldColor = new Color(52, 152, 219);
+	private Color texfieldColor = new Color(45, 52, 54);
+	private String colorTableCode = "#dee9fc";
+	MatteBorder matteBorderCB = new MatteBorder(2, 2, 2, 2, Color.decode("#EFEFEF"));
+	LineBorder lineCB = new LineBorder(Color.white);
+	MatteBorder matteBorderCBDark = new MatteBorder(2, 2, 2, 2, Color.decode("#919191"));
+	MatteBorder borderTxt = new MatteBorder(2, 2, 2, 2, Color.decode("#EFEFEF"));
+	MatteBorder borderTxtDark = new MatteBorder(2, 2, 2, 2, Color.decode("#919191"));
+	EmptyBorder emptyBorderTxt = new EmptyBorder(0, 7, 0, 7);
+	EmptyBorder emptyBorderCB = new EmptyBorder(0, 7, 0, 0);
 
     OnsiteCourseDTO onsite = new OnsiteCourseDTO();
 
@@ -519,8 +558,11 @@ public class jpnOnsite extends javax.swing.JPanel {
         jLabel3.setText("Tìm kiếm:");
         jPanel6.add(jLabel3);
 
-        jtfSearch.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jtfSearch.setPreferredSize(new java.awt.Dimension(400, 30));
+        jtfSearch.setPreferredSize(new Dimension(200, 30));
+        jtfSearch.setFont(sgUI13);
+        jtfSearch.setBorder(BorderFactory.createCompoundBorder(borderTxt, new EmptyBorder(0, 3, 0, 3)));
+        jtfSearch.setForeground(Color.black);
+
         jPanel6.add(jtfSearch);
 
         jPanel3.add(jPanel6);
@@ -541,9 +583,37 @@ public class jpnOnsite extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        onsiteTable.setGridColor(new java.awt.Color(255, 255, 255));
-        onsiteTable.setSelectionBackground(new java.awt.Color(102, 153, 255));
+//        onsiteTable.setGridColor(new java.awt.Color(255, 255, 255));
+//        onsiteTable.setSelectionBackground(new java.awt.Color(102, 153, 255));
+//        onsiteScroll.setViewportView(onsiteTable);
+        onsiteScroll = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        onsiteScroll.setBorder(BorderFactory.createEmptyBorder());
         onsiteScroll.setViewportView(onsiteTable);
+//		renderTB(onsiteTable);
+//		renderData(onsiteTable);
+        onsiteScroll.setViewportBorder(null);
+
+		onsiteTable.setShowGrid(false);
+		onsiteTable.setIntercellSpacing(new Dimension(0, 0));
+		TableCellRenderer renderer = new CustomTableOnlsiteCourse();
+		for (int i = 0; i < onsiteTable.getColumnCount(); i++) {
+			onsiteTable.getColumnModel().getColumn(i).setCellRenderer(renderer);
+		}
+		onsiteTable.setRowHeight(35);
+		onsiteTable.getTableHeader().setPreferredSize(new Dimension(1, 30));
+		onsiteTable.getTableHeader().setFont(fontTable);
+		onsiteTable.getTableHeader().setBorder(null);
+		onsiteTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//		onsiteTable.getColumnModel().getColumn(0).setPreferredWidth(50);
+//		onsiteTable.getColumnModel().getColumn(1).setPreferredWidth(200);
+//		onsiteTable.getColumnModel().getColumn(2).setPreferredWidth(50);
+//		onsiteTable.getColumnModel().getColumn(3).setPreferredWidth(100);
+//		onsiteTable.getColumnModel().getColumn(4).setPreferredWidth(100);
+//		onsiteTable.getColumnModel().getColumn(5).setPreferredWidth(100);
+//		onsiteTable.getColumnModel().getColumn(6).setPreferredWidth(50);
+		
+		onsiteScroll.getViewport().setBackground(Color.white);
+		onsiteTable.getTableHeader().setBackground(Color.decode(colorTableCode));
 
         jPanel4.add(onsiteScroll, java.awt.BorderLayout.CENTER);
 
