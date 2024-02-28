@@ -32,6 +32,9 @@ public class ColoredTableCellRenderer extends DefaultTableCellRenderer {
 			if(value.toString().equalsIgnoreCase("Không Đạt")) {
 				cellComponent.setForeground(Color.RED);
 			}
+			else if(value.toString().equalsIgnoreCase("Chưa Nhập Điểm")) {
+				cellComponent.setForeground(Color.orange);
+			}
 			else {
 				cellComponent.setForeground(Color.green);
 			}

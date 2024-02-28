@@ -33,8 +33,8 @@ public class ActivityMain extends JFrame {
     private Font sgUI18b = new Font("Segoe UI", Font.BOLD, 18);
     private Font tNR18b = new Font("Times New Roman", Font.BOLD, 18);
 
-    JButton btnMode = new JButton("Buổi tối");
-    JButton btnLogOut = new JButton("Đăng xuất");
+//    JButton btnMode = new JButton("Buổi tối");
+//    JButton btnLogOut = new JButton("Đăng xuất");
     JButton btnZoomMenu = new JButton();
 
     //mode
@@ -82,20 +82,20 @@ public class ActivityMain extends JFrame {
         }
 
         //btn logout
-        btnLogOut.setFocusPainted(false);
-        btnLogOut.setPreferredSize(new Dimension(200, 40));
-        btnLogOut.setMaximumSize(new Dimension(200, 40));
-        btnLogOut.setFont(sgUI15);
-        ImageIcon iconLogOut = new ImageIcon(new ImageIcon(getClass().getResource("/GUI/assets/logout.png")).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-        btnLogOut.setIcon(iconLogOut);
-
-        //btn mode
-        btnMode.setFocusPainted(false);
-        btnMode.setPreferredSize(new Dimension(200, 40));
-        btnMode.setMaximumSize(new Dimension(200, 40));
-        btnMode.setFont(sgUI15);
-        ImageIcon iconMode = new ImageIcon(new ImageIcon(getClass().getResource("/GUI/assets/moon.png")).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-        btnMode.setIcon(iconMode);
+//        btnLogOut.setFocusPainted(false);
+//        btnLogOut.setPreferredSize(new Dimension(200, 40));
+//        btnLogOut.setMaximumSize(new Dimension(200, 40));
+//        btnLogOut.setFont(sgUI15);
+//        ImageIcon iconLogOut = new ImageIcon(new ImageIcon(getClass().getResource("/GUI/assets/logout.png")).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+//        btnLogOut.setIcon(iconLogOut);
+//
+//        //btn mode
+//        btnMode.setFocusPainted(false);
+//        btnMode.setPreferredSize(new Dimension(200, 40));
+//        btnMode.setMaximumSize(new Dimension(200, 40));
+//        btnMode.setFont(sgUI15);
+//        ImageIcon iconMode = new ImageIcon(new ImageIcon(getClass().getResource("/GUI/assets/moon.png")).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+//        btnMode.setIcon(iconMode);
 
         btnZoomMenu.setFocusable(false);
         btnZoomMenu.setMnemonic(KeyEvent.VK_Z);
@@ -115,13 +115,13 @@ public class ActivityMain extends JFrame {
         //action hover menu
         setMouse();
         //action hover mode
-        setMouseMode();
+//        setMouseMode();
         //set pos
         pos = btn1;
         //set action 
         setAction();
 //        //set action mode
-        setActionMode();
+//        setActionMode();
 //        //set action logout
 //        actionLogOut();
 //        //set action zoom
@@ -260,8 +260,8 @@ public class ActivityMain extends JFrame {
         }
 
         pnBottom.setLayout(new BoxLayout(pnBottom, BoxLayout.Y_AXIS));
-        pnBottom.add(btnMode);
-        pnBottom.add(btnLogOut);
+//        pnBottom.add(btnMode);
+//        pnBottom.add(btnLogOut);
         if (LightDark == 1) {
             Color black = new Color(51, 51, 51);
             pnTop.setBackground(black);
@@ -367,48 +367,48 @@ public class ActivityMain extends JFrame {
         }
     }
 
-    public void setMouseMode() {
-
-        btnLogOut.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                if (LightDark == 0) {
-                    btnLogOut.setBackground(Color.decode("#FFFFFF"));
-                } else {
-                    btnLogOut.setBackground(Color.decode("#A0A0A0"));
-                }
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                if (LightDark == 0) {
-                    btnLogOut.setBackground(Color.decode("#bad4ff"));
-                } else {
-                    btnLogOut.setBackground(Color.decode("#696969"));
-                }
-            }
-        });
-
-        btnMode.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                if (LightDark == 0) {
-                    btnMode.setBackground(Color.decode("#FFFFFF"));
-                } else {
-                    btnMode.setBackground(Color.decode("#A0A0A0"));
-                }
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                if (LightDark == 0) {
-                    btnMode.setBackground(Color.decode("#bad4ff"));
-                } else {
-                    btnMode.setBackground(Color.decode("#696969"));
-                }
-            }
-        });
-    }
+//    public void setMouseMode() {
+//
+//        btnLogOut.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseEntered(MouseEvent e) {
+//                if (LightDark == 0) {
+//                    btnLogOut.setBackground(Color.decode("#FFFFFF"));
+//                } else {
+//                    btnLogOut.setBackground(Color.decode("#A0A0A0"));
+//                }
+//            }
+//
+//            @Override
+//            public void mouseExited(MouseEvent e) {
+//                if (LightDark == 0) {
+//                    btnLogOut.setBackground(Color.decode("#bad4ff"));
+//                } else {
+//                    btnLogOut.setBackground(Color.decode("#696969"));
+//                }
+//            }
+//        });
+//
+//        btnMode.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseEntered(MouseEvent e) {
+//                if (LightDark == 0) {
+//                    btnMode.setBackground(Color.decode("#FFFFFF"));
+//                } else {
+//                    btnMode.setBackground(Color.decode("#A0A0A0"));
+//                }
+//            }
+//
+//            @Override
+//            public void mouseExited(MouseEvent e) {
+//                if (LightDark == 0) {
+//                    btnMode.setBackground(Color.decode("#bad4ff"));
+//                } else {
+//                    btnMode.setBackground(Color.decode("#696969"));
+//                }
+//            }
+//        });
+//    }
 
     public synchronized void run(JButton btn, Color color) {
         new Thread(() -> {
@@ -460,7 +460,7 @@ public class ActivityMain extends JFrame {
                     ImageIcon iconMenu = new ImageIcon(new ImageIcon(getClass().getResource("/GUI/assets/menu.png")).getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
                     btnZoomMenu.setIcon(iconMenu);
                     zoom = 1;
-                    hideText();
+//                    hideText();
                     run(btnMenu);
                     lightDark();
                     showToolTip();
@@ -479,13 +479,13 @@ public class ActivityMain extends JFrame {
         });
     }
 
-    public void hideText() {
-        for (JButton x : btnMenu) {
-            x.setText("");
-        }
-        btnLogOut.setText("");
-        btnMode.setText("");
-    }
+//    public void hideText() {
+//        for (JButton x : btnMenu) {
+//            x.setText("");
+//        }
+//        btnLogOut.setText("");
+//        btnMode.setText("");
+//    }
 
     public void showText() {
         btnMenu.get(0).setText(" Màn hình chính");
@@ -494,12 +494,12 @@ public class ActivityMain extends JFrame {
         btnMenu.get(3).setText(" Phân Công Giảng Dạy");
         btnMenu.get(4).setText(" Kết Quả Học Tập");
         
-        btnLogOut.setText("Đăng xuất");
-        if (LightDark == 0) {
-            btnMode.setText("Buổi tối");
-        } else {
-            btnMode.setText("Buổi sáng");
-        }
+//        btnLogOut.setText("Đăng xuất");
+//        if (LightDark == 0) {
+//            btnMode.setText("Buổi tối");
+//        } else {
+//            btnMode.setText("Buổi sáng");
+//        }
     }
 
     public void showToolTip() {
@@ -530,10 +530,10 @@ public class ActivityMain extends JFrame {
                     x.setMaximumSize(new Dimension(i, 45));
                 }
                 pnMenu.setPreferredSize(new Dimension(i, 100));
-                btnMode.setPreferredSize(new Dimension(i, 40));
-                btnMode.setMaximumSize(new Dimension(i, 40));
-                btnLogOut.setPreferredSize(new Dimension(i, 40));
-                btnLogOut.setMaximumSize(new Dimension(i, 40));
+//                btnMode.setPreferredSize(new Dimension(i, 40));
+//                btnMode.setMaximumSize(new Dimension(i, 40));
+//                btnLogOut.setPreferredSize(new Dimension(i, 40));
+//                btnLogOut.setMaximumSize(new Dimension(i, 40));
                 pnMenu.repaint();
                 pnMenu.revalidate();
                 repaint();
@@ -552,10 +552,10 @@ public class ActivityMain extends JFrame {
                     x.setPreferredSize(new Dimension(i, 45));
                     x.setMaximumSize(new Dimension(i, 45));
                 }
-                btnMode.setPreferredSize(new Dimension(i, 40));
-                btnMode.setMaximumSize(new Dimension(i, 40));
-                btnLogOut.setPreferredSize(new Dimension(i, 40));
-                btnLogOut.setMaximumSize(new Dimension(i, 40));
+//                btnMode.setPreferredSize(new Dimension(i, 40));
+//                btnMode.setMaximumSize(new Dimension(i, 40));
+//                btnLogOut.setPreferredSize(new Dimension(i, 40));
+//                btnLogOut.setMaximumSize(new Dimension(i, 40));
                 pnMenu.setPreferredSize(new Dimension(i, 100));
                 pnMenu.repaint();
                 pnMenu.revalidate();
@@ -572,34 +572,34 @@ public class ActivityMain extends JFrame {
 
     //setting mode
     //set lightdark action
-    public void setActionMode() {
-        btnMode.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (LightDark == 0) {
-                    if (zoom == 0) {
-                        btnMode.setText("Buổi sáng");
-                    }
-                    ImageIcon iconMode = new ImageIcon(new ImageIcon(getClass().getResource("/GUI/assets/dichvuicon.png")).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-                    btnMode.setIcon(iconMode);
-                    LightDark = 1;
-                    lightDark();
-                    revalidate();
-                    repaint();
-                } else {
-                    if (zoom == 0) {
-                        btnMode.setText("Buổi tối");
-                    }
-                    ImageIcon iconMode = new ImageIcon(new ImageIcon(getClass().getResource("/GUI/assets/moon.png")).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-                    btnMode.setIcon(iconMode);
-                    LightDark = 0;
-                    lightDark();
-                    revalidate();
-                    repaint();
-                }
-            }
-        });
-    }
+//    public void setActionMode() {
+//        btnMode.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                if (LightDark == 0) {
+//                    if (zoom == 0) {
+//                        btnMode.setText("Buổi sáng");
+//                    }
+//                    ImageIcon iconMode = new ImageIcon(new ImageIcon(getClass().getResource("/GUI/assets/dichvuicon.png")).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+//                    btnMode.setIcon(iconMode);
+//                    LightDark = 1;
+//                    lightDark();
+//                    revalidate();
+//                    repaint();
+//                } else {
+//                    if (zoom == 0) {
+//                        btnMode.setText("Buổi tối");
+//                    }
+//                    ImageIcon iconMode = new ImageIcon(new ImageIcon(getClass().getResource("/GUI/assets/moon.png")).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+//                    btnMode.setIcon(iconMode);
+//                    LightDark = 0;
+//                    lightDark();
+//                    revalidate();
+//                    repaint();
+//                }
+//            }
+//        });
+//    }
 
     public void lightDark() {
         if (LightDark == 0) {
@@ -618,19 +618,19 @@ public class ActivityMain extends JFrame {
                 x.setForeground(Color.black);
             }
             if (zoom == 0) {
-                btnLogOut.setBorder(new MatteBorder(2, 10, 0, 10, Color.decode("#dee9fc")));
-                btnLogOut.setBackground(Color.decode("#bad4ff"));
-                btnLogOut.setForeground(Color.black);
-                btnMode.setBorder(new MatteBorder(0, 10, 2, 10, Color.decode("#dee9fc")));
-                btnMode.setBackground(Color.decode("#bad4ff"));
-                btnMode.setForeground(Color.black);
+//                btnLogOut.setBorder(new MatteBorder(2, 10, 0, 10, Color.decode("#dee9fc")));
+//                btnLogOut.setBackground(Color.decode("#bad4ff"));
+//                btnLogOut.setForeground(Color.black);
+//                btnMode.setBorder(new MatteBorder(0, 10, 2, 10, Color.decode("#dee9fc")));
+//                btnMode.setBackground(Color.decode("#bad4ff"));
+//                btnMode.setForeground(Color.black);
             } else {
-                btnLogOut.setBorder(new MatteBorder(2, 2, 0, 2, Color.decode("#dee9fc")));
-                btnLogOut.setBackground(Color.decode("#bad4ff"));
-                btnLogOut.setForeground(Color.black);
-                btnMode.setBorder(new MatteBorder(0, 2, 2, 2, Color.decode("#dee9fc")));
-                btnMode.setBackground(Color.decode("#bad4ff"));
-                btnMode.setForeground(Color.black);
+//                btnLogOut.setBorder(new MatteBorder(2, 2, 0, 2, Color.decode("#dee9fc")));
+//                btnLogOut.setBackground(Color.decode("#bad4ff"));
+//                btnLogOut.setForeground(Color.black);
+//                btnMode.setBorder(new MatteBorder(0, 2, 2, 2, Color.decode("#dee9fc")));
+//                btnMode.setBackground(Color.decode("#bad4ff"));
+//                btnMode.setForeground(Color.black);
             }
             btnZoomMenu.setBorder(new MatteBorder(0, 10, 0, 10, Color.decode("#c6d9f7")));
             btnZoomMenu.setBackground(Color.decode("#c6d9f7"));
@@ -652,21 +652,21 @@ public class ActivityMain extends JFrame {
                 x.setBackground(black);
                 x.setForeground(Color.white);
             }
-            if (zoom == 0) {
-                btnLogOut.setBorder(new MatteBorder(2, 10, 0, 10, black));
-                btnLogOut.setBackground(Color.decode("#696969"));
-                btnLogOut.setForeground(Color.white);
-                btnMode.setBorder(new MatteBorder(0, 10, 2, 10, black));
-                btnMode.setBackground(Color.decode("#696969"));
-                btnMode.setForeground(Color.white);
-            } else {
-                btnLogOut.setBorder(new MatteBorder(2, 2, 0, 2, black));
-                btnLogOut.setBackground(Color.decode("#696969"));
-                btnLogOut.setForeground(Color.white);
-                btnMode.setBorder(new MatteBorder(0, 2, 2, 2, black));
-                btnMode.setBackground(Color.decode("#696969"));
-                btnMode.setForeground(Color.white);
-            }
+//            if (zoom == 0) {
+//                btnLogOut.setBorder(new MatteBorder(2, 10, 0, 10, black));
+//                btnLogOut.setBackground(Color.decode("#696969"));
+//                btnLogOut.setForeground(Color.white);
+//                btnMode.setBorder(new MatteBorder(0, 10, 2, 10, black));
+//                btnMode.setBackground(Color.decode("#696969"));
+//                btnMode.setForeground(Color.white);
+//            } else {
+//                btnLogOut.setBorder(new MatteBorder(2, 2, 0, 2, black));
+//                btnLogOut.setBackground(Color.decode("#696969"));
+//                btnLogOut.setForeground(Color.white);
+//                btnMode.setBorder(new MatteBorder(0, 2, 2, 2, black));
+//                btnMode.setBackground(Color.decode("#696969"));
+//                btnMode.setForeground(Color.white);
+//            }
             btnZoomMenu.setBorder(new MatteBorder(0, 10, 0, 10, new Color(69, 69, 69)));
             btnZoomMenu.setBackground(new Color(69, 69, 69));
             pos.setBackground(Color.decode("#4c4d4c"));

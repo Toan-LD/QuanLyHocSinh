@@ -72,6 +72,28 @@ public class KetQuaDAO implements DaoInterface<KetQuaDTO>{
         }
         return check;
 	}
+	public int delete(int courseid, int studentid) {
+		// TODO Auto-generated method stub
+		int check = 0;
+        try {
+            //maHD,maCTT,tienP,tienDV,giamGia,phuThu,tongTien,ngayThanhToan,phuongThucThanhToan,xuLy
+            Connection con = new ConnectDB().getConnection();
+            Statement st = con.createStatement();
+            String sql = "DELETE FROM studentgrade "
+                    + "WHERE courseid = " + courseid + " and studentid= "+studentid+";";
+            check = st.executeUpdate(sql);
+            if (check > 1) {
+                System.out.println("thành công");
+            }
+
+            con.close();
+
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+        return check;
+	}
 
 	@Override
 	public int update(KetQuaDTO t) {
@@ -123,13 +145,17 @@ public class KetQuaDAO implements DaoInterface<KetQuaDTO>{
             	t.add(rs.getString(2));
             	t.add(rs.getString(4)+" "+rs.getString(3));
             	t.add(rs.getFloat(5)+"");
-            	if(rs.getFloat(5)>=1) {
-            		t.add("Đạt");
+            	if(rs.wasNull()) {
+            		t.add("Chưa Nhập Điểm");
+            	}else {
+            		if(rs.getFloat(5)>=1) {
+                		t.add("Đạt");
+                	}
+                	else {
+                		t.add("Không Đạt");
+                	}
             	}
-            	else {
-            		t.add("Không Đạt");
-            	}
-                vec.add(t);
+            	vec.add(t);
             }
             con.close();
         } catch (SQLException ex) {
@@ -236,6 +262,35 @@ public class KetQuaDAO implements DaoInterface<KetQuaDTO>{
 
         }
 		return name;
+	}
+	public int updateGrade(int grade, int courseid, int studentid) {
+		int check = 0;
+        try {
+            Connection con = new ConnectDB().getConnection();
+            Statement st = con.createStatement();
+            //maHD,maCTT,tienP,tienDV,giamGia,phuThu,tongTien,ngayThanhToan,phuongThucThanhToan,xuLy
+            String sql = "UPDATE studentgrade SET grade = ? WHERE courseid = ? and studentid= ?";
+            PreparedStatement prep = con.prepareStatement(sql);
+            prep.setInt(1, grade);
+            prep.setInt(2, courseid);
+            prep.setFloat(3, studentid);
+            check = prep.executeUpdate();
+            if (check > 0) {
+                System.out.println("thêm dữ liệu thành công");
+            } else {
+                System.out.println("thất bại 8987");
+            }
+            System.out.println("ban da thucc thi: " + sql);
+            System.out.println("so dong thay doi: " + check);
+
+            //buoc 5 ngat ket noi
+            con.close();
+        } catch (Exception e) {
+            // TODO: handle exception
+            System.out.println("thất bại");
+            e.printStackTrace();
+        }
+        return check;
 	}
 
 }

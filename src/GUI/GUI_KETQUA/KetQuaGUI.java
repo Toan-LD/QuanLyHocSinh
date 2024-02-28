@@ -2,24 +2,30 @@
  * Author: Dương Thành Trưởng
  */
 
-
 package GUI.GUI_KETQUA;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+//import java.util.Timer;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -31,7 +37,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
@@ -39,22 +47,26 @@ import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.ComboPopup;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableRowSorter;
 
 import BUS.KetQuaBUS;
 import GUI.GUI_BASIC.ThongBaoDialog;
 
 public class KetQuaGUI extends JPanel {
 	// ----------MAIN__COMPONENTS------------
-	private JPanel pnNorth, pnCenter, pnSouth, pnNorthTittle, pnNorthContent, pnNorthContentLeft, pnNorthContentRight,
-			pnNotification, pnCenterContent;
+	private JPanel pnNorth, pnCenter, pnSouth, pnNorthTittle, pnNorthContent, pnNorthContentLeft, pnNorthContentRight,pnContainerOfContentRight,
+			pnNotification, pnCenterContent,pnContainerOfContentRightTittle;
 	private InformationFORM pnCenterInfor;
-	private JLabel lbTittle, lbSortText;
+	private JLabel lbTittle, lbNotification,lbTittleOfSearch;
 	private JButton btnSearch, btnAdd, btnDelete, btnUpdate, btnRefresh;
-	private JComboBox<String> cbbSortContent;
+//	private JComboBox<String> cbbSortContent;
 	private JTextField tfSearch;
 	private JTable tbMain;
 	private JScrollPane scrMain;
+	private Timer timer;
 
 //	FORMAT
 	private Font sgUI15 = new Font("Segoe UI", Font.BOLD, 15);
@@ -94,9 +106,9 @@ public class KetQuaGUI extends JPanel {
 
 		btnRefresh = new JButton();
 
-		lbSortText = new JLabel("Sắp Xếp");
-
-		cbbSortContent = new JComboBox<String>();
+//		lbSortText = new JLabel("Sắp Xếp");
+//
+//		cbbSortContent = new JComboBox<String>();
 
 		tfSearch = new JTextField();
 
@@ -130,7 +142,7 @@ public class KetQuaGUI extends JPanel {
 
 		formatTableGrade(tbMain);
 
-		btnAdd = new JButton("Thêm");
+		btnAdd = new JButton("Nhập Điểm");
 
 		btnDelete = new JButton("Xóa");
 
@@ -139,26 +151,42 @@ public class KetQuaGUI extends JPanel {
 //		NOTIFICATION PANEL
 		pnNotification = new JPanel();
 		pnNotification.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JLabel lbNotification = new JLabel("*Chọn dòng muốn xem sau đó click phải chuột để xem chi tiết");
+		lbNotification = new JLabel("*Chọn dòng muốn xem sau đó click phải chuột để xem chi tiết");
 		lbNotification.setFont(sgUI13I);
 		lbNotification.setForeground(Color.gray);
 		pnNotification.add(lbNotification);
 //		NORTH PANEL CONTENT LEFT
 		pnNorthContentLeft = new JPanel();
 		pnNorthContentLeft.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
-		pnNorthContentLeft.add(lbSortText);
-		pnNorthContentLeft.add(cbbSortContent);
+//		pnNorthContentLeft.add(lbSortText);
+//		pnNorthContentLeft.add(cbbSortContent);
+		
+		
 //		NORTH PANEL CONTENT RIGHT
 		pnNorthContentRight = new JPanel();
-		pnNorthContentRight.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 10));
+		pnNorthContentRight.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 3));
 		pnNorthContentRight.add(tfSearch);
 		pnNorthContentRight.add(btnSearch);
+		
+//		CONTAINER OF PANEL CONTENT RIGHT
+		lbTittleOfSearch = new JLabel("Nhấn phím Enter hoặc nút tìm kiếm");
+		lbTittleOfSearch.setFont(new Font("Segoe UI", Font.ITALIC, 10));
+		lbTittleOfSearch.setForeground(Color.gray);
+		pnContainerOfContentRightTittle=new JPanel();
+		pnContainerOfContentRightTittle.setLayout(new FlowLayout(FlowLayout.LEFT, 13, 0));
+		pnContainerOfContentRightTittle.add(lbTittleOfSearch);
+		pnContainerOfContentRight=new JPanel();
+		pnContainerOfContentRight.setLayout(new BorderLayout());
+		pnContainerOfContentRight.add(pnContainerOfContentRightTittle,BorderLayout.SOUTH);
+		pnContainerOfContentRight.add(pnNorthContentRight,BorderLayout.CENTER);
+		pnContainerOfContentRightTittle.setBackground(Color.white);
+		pnContainerOfContentRight.setBackground(Color.white);
 
 //		NORTH PANEL CONTENT
 		pnNorthContent = new JPanel();
-		pnNorthContent.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 10));
+		pnNorthContent.setLayout(new FlowLayout(FlowLayout.RIGHT, 50, 10));
 		pnNorthContent.add(pnNorthContentLeft);
-		pnNorthContent.add(pnNorthContentRight);
+		pnNorthContent.add(pnContainerOfContentRight);
 
 //		NORTH PANEL TITTLE
 		pnNorthTittle = new JPanel();
@@ -176,15 +204,15 @@ public class KetQuaGUI extends JPanel {
 		pnCenterContent = new JPanel();
 		pnCenterContent.setLayout(new BorderLayout());
 		pnCenterContent.add(scrMain, BorderLayout.CENTER);
-		
-		pnCenterInfor=new InformationFORM("Lập trình hướng đối tượng", "Nguyễn Thanh Sang", "Dương Thành Trưởng", 4, "Xuất Sắc");
+
+		pnCenterInfor = new InformationFORM("Lập trình hướng đối tượng", "Nguyễn Thanh Sang", "Dương Thành Trưởng", 4,
+				"Xuất Sắc");
 
 		pnCenter = new JPanel();
 		pnCenter.setLayout(new BorderLayout());
 		pnCenter.add(pnNotification, BorderLayout.NORTH);
 		pnCenter.add(pnCenterContent, BorderLayout.CENTER);
-		pnCenter.add(pnCenterInfor,BorderLayout.EAST);
-		
+		pnCenter.add(pnCenterInfor, BorderLayout.EAST);
 
 //		SOUTH PANEL
 		pnSouth = new JPanel();
@@ -208,22 +236,22 @@ public class KetQuaGUI extends JPanel {
 
 		btnRefresh.setSize(30, 30);
 
-		lbSortText.setFont(sgUI15);
-		lbSortText.setPreferredSize(new Dimension(100, 40));
-
-		cbbSortContent.setBorder(new MatteBorder(2, 2, 2, 0, Color.decode("#EFEFEF")));
-		cbbSortContent.setBackground(Color.white);
-		cbbSortContent.setFont(sgUI13);
-		cbbSortContent.setPreferredSize(new Dimension(200, 30));
-		cbbSortContent.setUI(new BasicComboBoxUI() {
-			@Override
-			protected ComboPopup createPopup() {
-				BasicComboPopup basicComboPopup = new BasicComboPopup(comboBox);
-				basicComboPopup.setBorder(lineCB);
-				return basicComboPopup;
-			}
-		});
-		cbbSortContent.setBorder(matteBorderCB);
+//		lbSortText.setFont(sgUI15);
+//		lbSortText.setPreferredSize(new Dimension(100, 40));
+//
+//		cbbSortContent.setBorder(new MatteBorder(2, 2, 2, 0, Color.decode("#EFEFEF")));
+//		cbbSortContent.setBackground(Color.white);
+//		cbbSortContent.setFont(sgUI13);
+//		cbbSortContent.setPreferredSize(new Dimension(200, 30));
+//		cbbSortContent.setUI(new BasicComboBoxUI() {
+//			@Override
+//			protected ComboPopup createPopup() {
+//				BasicComboPopup basicComboPopup = new BasicComboPopup(comboBox);
+//				basicComboPopup.setBorder(lineCB);
+//				return basicComboPopup;
+//			}
+//		});
+//		cbbSortContent.setBorder(matteBorderCB);
 
 		tfSearch.setPreferredSize(new Dimension(200, 30));
 		tfSearch.setFont(sgUI13);
@@ -299,6 +327,8 @@ public class KetQuaGUI extends JPanel {
 		eventAdd();
 		eventUpdate();
 		eventRemove();
+		eventSearch();
+//		eventRefresh();
 	}
 
 	public void renderTB(JTable tbP) {
@@ -315,6 +345,7 @@ public class KetQuaGUI extends JPanel {
 
 	public void renderData(JTable tb) {
 		DefaultTableModel model = (DefaultTableModel) tb.getModel();
+		model.setRowCount(0);
 		for (Vector<String> vec : KetQuaBUS.getInstance().getListTable()) {
 			model.addRow(vec);
 		}
@@ -332,97 +363,200 @@ public class KetQuaGUI extends JPanel {
 
 	public void eventRowDetail() {
 		tbMain.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (SwingUtilities.isRightMouseButton(e)) {
-                    
-                    new ThongBaoDialog("Xem Chi Tiết", ThongBaoDialog.WARNING_DIALOG);
-                    int choice=ThongBaoDialog.action;
-                    
-                    // Xử lý lựa chọn từ người dùng
-                    if (choice == ThongBaoDialog.OK_OPTION) {
-                        // Thực hiện hành động khi người dùng chọn OK
-                        int row=tbMain.getSelectedRow();
-                        if(row<0) {
-                        	new ThongBaoDialog("Chọn dòng để xem", ThongBaoDialog.INFO_DIALOG);
-                        	return;
-                        }
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if (SwingUtilities.isRightMouseButton(e)) {
+
+					new ThongBaoDialog("Xem Chi Tiết", ThongBaoDialog.INFO_DIALOG);
+					int choice = ThongBaoDialog.action;
+
+					// Xử lý lựa chọn từ người dùng
+					if (choice == ThongBaoDialog.OK_OPTION) {
+						// Thực hiện hành động khi người dùng chọn OK
+						int row = tbMain.getSelectedRow();
+						if (row < 0) {
+							new ThongBaoDialog("Chọn dòng để xem", ThongBaoDialog.INFO_DIALOG);
+							return;
+						}
 //                        System.out.println(row);
-                        int courseId=Integer.parseInt(tbMain.getValueAt(row, 0).toString());
-                        String courseName=tbMain.getValueAt(row, 1).toString();
-                        String studentName=tbMain.getValueAt(row, 2).toString();
-                        float grade=Float.parseFloat(tbMain.getValueAt(row, 3).toString());
-                        String teacherName=KetQuaBUS.getInstance().getTeacherNameByCourseId(courseId); // DÙNG TẠM
-                        String rank="";
-                        if(grade>=1 && grade<2.5) {
-                        	rank="Trung Bình";
-                        }
-                        else if(grade>=2.5 && grade<3.2) {
-                        	rank="Khá";
-                        }
-                        else if(grade>=3.2 && grade<3.6) {
-                        	rank="Giỏi";
-                        }
-                        else if(grade>=3.6) {
-                        	rank="Xuất Sắc";
-                        }
-                        else {
-                        	rank="Yếu";
-                        }
-                        pnCenterInfor.setDatas(courseName, teacherName, studentName, grade, rank);
-                        pnCenterInfor.setVisible(true);
-                    } else {
-                        // Thực hiện hành động khi người dùng chọn Cancel hoặc đóng cửa sổ
-                        System.out.println("User canceled the action.");
-                        return;
-                    }
-                }
-            }
+						int courseId = Integer.parseInt(tbMain.getValueAt(row, 0).toString());
+						String courseName = tbMain.getValueAt(row, 1).toString();
+						String studentName = tbMain.getValueAt(row, 2).toString();
+						float grade = Float.parseFloat(tbMain.getValueAt(row, 3).toString());
+						String teacherName = KetQuaBUS.getInstance().getTeacherNameByCourseId(courseId); // DÙNG TẠM
+						String rank = "";
+						if (grade >= 1 && grade < 2.5) {
+							rank = "Trung Bình";
+						} else if (grade >= 2.5 && grade < 3.2) {
+							rank = "Khá";
+						} else if (grade >= 3.2 && grade < 3.6) {
+							rank = "Giỏi";
+						} else if (grade >= 3.6) {
+							rank = "Xuất Sắc";
+						} else {
+							rank = "Yếu";
+						}
+						pnCenterInfor.setDatas(courseName, teacherName, studentName, grade, rank);
+						pnCenterInfor.setVisible(true);
+					} else {
+						// Thực hiện hành động khi người dùng chọn Cancel hoặc đóng cửa sổ
+						System.out.println("User canceled the action.");
+						return;
+					}
+				}
+			}
 		});
 
 	}
+
 	public void eventAdd() {
 		btnAdd.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				new AddEditFORM();
+
+				// begin update table
+				Vector<Vector<String>> vec = new Vector<>();
+				for (int i = 0; i < tbMain.getRowCount(); i++) {
+					if (tbMain.getValueAt(i, 4).toString().equalsIgnoreCase("Chưa Nhập Điểm")) {
+						Vector<String> item = new Vector<>();
+						item.add(tbMain.getValueAt(i, 0).toString());
+						item.add(tbMain.getValueAt(i, 1).toString());
+						item.add(tbMain.getValueAt(i, 2).toString());
+						item.add(tbMain.getValueAt(i, 3).toString());
+						item.add(tbMain.getValueAt(i, 4).toString());
+						vec.add(item);
+
+					}
+				}
+				DefaultTableModel model = (DefaultTableModel) tbMain.getModel();
+				model.setRowCount(0);
+				for (Vector<String> vector : vec) {
+					model.addRow(vector);
+				}
+				// end update table
+
+				// begin update lb notification
+				String initialNotification = lbNotification.getText().toString();
+				String secondNotification = "*Click vào ô điểm để chỉnh sửa. Nhấn phím Enter để lưu và xuống dòng.";
+				lbNotification.setText(secondNotification);
+				// end
+//				System.out.println(tbMain.getRowCount());
+				// begin edit table
+				TableCellEditor quoteEditor = new QuoteCellEditor();
+				tbMain.requestFocusInWindow();
+				tbMain.editCellAt(0, 3);
+				timer = new Timer(100, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        btnAdd.doClick(); // Tự động nhấn lại nút
+                        timer.stop();; // Dừng timer
+                    }
+                });
+                timer.setRepeats(false); // Chỉ lặp lại một lần
+                timer.start(); // Bắt đầu time
+                
+                
+                tbMain.addKeyListener(new KeyAdapter() {
+                	@Override
+					public void keyTyped(KeyEvent e) {
+						// TODO Auto-generated method stub
+                		
+						if(e.getKeyChar()==KeyEvent.VK_ENTER) {
+							int row=tbMain.getSelectedRow();
+							if(row>tbMain.getRowCount()-1) {
+								row=-1;
+							}
+							tbMain.changeSelection(row+1,0 , false, false);
+							System.out.println(row);
+							tbMain.requestFocusInWindow();
+							tbMain.editCellAt(row+1, 3);
+						}
+					}
+				});
+				// end
 			}
 		});
+
 	}
+
 	public void eventUpdate() {
 		btnUpdate.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				int row=tbMain.getSelectedRow();
-				if(row<0) {
+				int row = tbMain.getSelectedRow();
+				if (row < 0) {
 					new ThongBaoDialog("Chọn dòng cần sửa", ThongBaoDialog.INFO_DIALOG);
 					return;
 				}
-				String course= tbMain.getValueAt(row, 0)+" - "+tbMain.getValueAt(row, 1);
-				String student=tbMain.getValueAt(row, 2).toString();
-				int id=KetQuaBUS.getInstance().getIdbyFullName(student);
-				String studentName=id+" - "+student;
-				float grade=Float.parseFloat(tbMain.getValueAt(row, 3).toString());
+				String course = tbMain.getValueAt(row, 0) + " - " + tbMain.getValueAt(row, 1);
+				String student = tbMain.getValueAt(row, 2).toString();
+				int id = KetQuaBUS.getInstance().getIdbyFullName(student);
+				String studentName = id + " - " + student;
+				float grade = Float.parseFloat(tbMain.getValueAt(row, 3).toString());
 				new AddEditFORM(course, studentName, grade);
 			}
 		});
 	}
+
 	public void eventRemove() {
 		btnDelete.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				int row=tbMain.getSelectedRow();
-				if(row<0) {
+				int row = tbMain.getSelectedRow();
+				if (row < 0) {
 					new ThongBaoDialog("Chưa chọn dòng", ThongBaoDialog.INFO_DIALOG);
 					return;
 				}
+				int courseid = Integer.parseInt(tbMain.getValueAt(row, 0).toString());
+				String fullName = tbMain.getValueAt(row, 2).toString();
+				KetQuaBUS.getInstance().delete(courseid, fullName);
+				renderData(tbMain);
 			}
 		});
+	}
+
+	public void eventSearch() {
+		
+		DefaultTableModel model = (DefaultTableModel) tbMain.getModel();
+		// Create a RowSorter for the table
+		TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+		tbMain.setRowSorter(sorter);
+
+		// Add ActionListener to the searchField
+		tfSearch.addActionListener(e -> {
+			String text = tfSearch.getText();
+			if (text.trim().length() == 0) {
+				sorter.setRowFilter(null); // If no text, show all rows
+			} else {
+				// Build a RowFilter that accepts rows if any of the columns contain the text
+				RowFilter<DefaultTableModel, Object> rowFilter = RowFilter.regexFilter("(?i)" + text);
+				sorter.setRowFilter(rowFilter);
+			}
+		});
+		btnSearch.addActionListener(e -> {
+			String text = tfSearch.getText();
+			if (text.trim().length() == 0) {
+				sorter.setRowFilter(null); // If no text, show all rows
+			} else {
+				// Build a RowFilter that accepts rows if any of the columns contain the text
+				RowFilter<DefaultTableModel, Object> rowFilter = RowFilter.regexFilter("(?i)" + text);
+				sorter.setRowFilter(rowFilter);
+			}
+		});
+		btnRefresh.addActionListener(e -> {
+			sorter.setRowFilter(null); // If no text, show all rows
+			tfSearch.setText("");
+			lbNotification.setText("*Chọn dòng muốn xem sau đó click phải chuột để xem chi tiết");
+			renderData(tbMain);
+		});
+	}
+	public void eventRefresh() {
+		
 	}
 }

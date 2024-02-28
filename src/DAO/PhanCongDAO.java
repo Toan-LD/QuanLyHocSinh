@@ -47,13 +47,13 @@ public class PhanCongDAO implements PhanCongIDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {
-	            int courseID = resultSet.getInt("CourseID");
-	            int personID = resultSet.getInt("PersonID");
-	            System.out.println("CourseID: " + courseID + ", PersonID: " + personID);
+				int courseID = resultSet.getInt("CourseID");
+				int personID = resultSet.getInt("PersonID");
+				System.out.println("CourseID: " + courseID + ", PersonID: " + personID);
 
-	            PhanCongDTO pDto = new PhanCongDTO(courseID, personID);
-	            listPhanCongDTOs.add(pDto);
-	        }
+				PhanCongDTO pDto = new PhanCongDTO(courseID, personID);
+				listPhanCongDTOs.add(pDto);
+			}
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -69,7 +69,7 @@ public class PhanCongDAO implements PhanCongIDAO {
 		List<PhanCongDTO> listPhanCongDTOs = new ArrayList<PhanCongDTO>();
 
 		Connection connection = ConnectDB.getConnection();
-		String sqlQueryString = "SELECT c.*, p.* FROM courseinstructor ci JOIN course c ON ci.courseID = c.courseID JOIN person p ON ci.personID = p.personID ORDER BY p.LastName ASC";
+		String sqlQueryString = "SELECT c.*, p.* FROM courseinstructor ci JOIN course c ON ci.courseID = c.courseID JOIN person p ON ci.personID = p.personID WHERE p.HireDate IS NOT NULL ORDER BY p.LastName ASC";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sqlQueryString);
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -98,7 +98,7 @@ public class PhanCongDAO implements PhanCongIDAO {
 		List<PhanCongDTO> listPhanCongDTOs = new ArrayList<PhanCongDTO>();
 
 		Connection connection = ConnectDB.getConnection();
-		String sqlQueryString = "SELECT c.*, p.* FROM courseinstructor ci JOIN course c ON ci.courseID = c.courseID JOIN person p ON ci.personID = p.personID ORDER BY p.PersonID ASC";
+		String sqlQueryString = "SELECT c.*, p.* FROM courseinstructor ci JOIN course c ON ci.courseID = c.courseID JOIN person p ON ci.personID = p.personID WHERE p.HireDate IS NOT NULL ORDER BY p.PersonID ASC";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sqlQueryString);
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -127,7 +127,7 @@ public class PhanCongDAO implements PhanCongIDAO {
 		List<PhanCongDTO> listPhanCongDTOs = new ArrayList<PhanCongDTO>();
 
 		Connection connection = ConnectDB.getConnection();
-		String sqlQueryString = "SELECT c.*, p.* FROM courseinstructor ci JOIN course c ON ci.courseID = c.courseID JOIN person p ON ci.personID = p.personID ORDER BY c.Title ASC";
+		String sqlQueryString = "SELECT c.*, p.* FROM courseinstructor ci JOIN course c ON ci.courseID = c.courseID JOIN person p ON ci.personID = p.personID WHERE p.HireDate IS NOT NULL ORDER BY c.Title ASC";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sqlQueryString);
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -156,7 +156,7 @@ public class PhanCongDAO implements PhanCongIDAO {
 		List<PhanCongDTO> listPhanCongDTOs = new ArrayList<PhanCongDTO>();
 
 		Connection connection = ConnectDB.getConnection();
-		String sqlQueryString = "SELECT c.*, p.* FROM courseinstructor ci JOIN course c ON ci.courseID = c.courseID JOIN person p ON ci.personID = p.personID ORDER BY c.CourseID ASC";
+		String sqlQueryString = "SELECT c.*, p.* FROM courseinstructor ci JOIN course c ON ci.courseID = c.courseID JOIN person p ON ci.personID = p.personID WHERE p.HireDate IS NOT NULL ORDER BY c.CourseID ASC";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sqlQueryString);
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -184,80 +184,80 @@ public class PhanCongDAO implements PhanCongIDAO {
 	public boolean addPhanCong(PhanCongDTO pDto) {
 		Connection connection = null;
 
-        try {
-        	connection = ConnectDB.getConnection();
-            String sql = "INSERT INTO courseinstructor(CourseID, PersonID) VALUES (?, ?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		try {
+			connection = ConnectDB.getConnection();
+			String sql = "INSERT INTO courseinstructor(CourseID, PersonID) VALUES (?, ?)";
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setInt(1, pDto.getCourseId());
-            preparedStatement.setInt(2, pDto.getPersonId());
+			preparedStatement.setInt(1, pDto.getCourseId());
+			preparedStatement.setInt(2, pDto.getPersonId());
 
-            int rowsAffected = preparedStatement.executeUpdate();
+			int rowsAffected = preparedStatement.executeUpdate();
 
-            if(rowsAffected > 0) {
-                return true;
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
-        	ConnectDB.closeConnection(connection);
-        }
+			if(rowsAffected > 0) {
+				return true;
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			ConnectDB.closeConnection(connection);
+		}
 
-        return false;
+		return false;
 	}
 
 	@Override
 	public boolean editPhanCong(PhanCongDTO newPDto, PhanCongDTO oldPDto) {
 		Connection connection = null;
 
-        try {
-        	connection = ConnectDB.getConnection();
+		try {
+			connection = ConnectDB.getConnection();
 			String sql = "UPDATE courseinstructor SET CourseID = ?, PersonID = ? WHERE CourseID = ? AND PersonID = ?";
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setInt(1, newPDto.getCourseId());
-            preparedStatement.setInt(2, newPDto.getPersonId());
+			preparedStatement.setInt(1, newPDto.getCourseId());
+			preparedStatement.setInt(2, newPDto.getPersonId());
 
-            preparedStatement.setInt(3, oldPDto.getCourseId());
-            preparedStatement.setInt(4, oldPDto.getPersonId());
+			preparedStatement.setInt(3, oldPDto.getCourseId());
+			preparedStatement.setInt(4, oldPDto.getPersonId());
 
-            int rowsAffected = preparedStatement.executeUpdate();
+			int rowsAffected = preparedStatement.executeUpdate();
 
-            if(rowsAffected > 0) {
-                return true;
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
-        	ConnectDB.closeConnection(connection);
-        }
-        return false;
+			if(rowsAffected > 0) {
+				return true;
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			ConnectDB.closeConnection(connection);
+		}
+		return false;
 	}
 
 	@Override
 	public boolean deletePhanCong(int pID, int cID) {
 		Connection connection = null;
 
-        try {
-        	connection = ConnectDB.getConnection();
-            String sql = "DELETE FROM courseinstructor WHERE PersonID = ? and CourseID = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		try {
+			connection = ConnectDB.getConnection();
+			String sql = "DELETE FROM courseinstructor WHERE PersonID = ? and CourseID = ?";
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setInt(1, pID);
-            preparedStatement.setInt(2, cID);
+			preparedStatement.setInt(1, pID);
+			preparedStatement.setInt(2, cID);
 
-            int rowsAffected = preparedStatement.executeUpdate();
+			int rowsAffected = preparedStatement.executeUpdate();
 
-            if(rowsAffected > 0) {
-                return true;
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
-        	ConnectDB.closeConnection(connection);
-        }
+			if(rowsAffected > 0) {
+				return true;
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			ConnectDB.closeConnection(connection);
+		}
 
-        return false;
+		return false;
 	}
 
 	@Override
@@ -269,16 +269,16 @@ public class PhanCongDAO implements PhanCongIDAO {
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sqlQueryString);
 			preparedStatement.setInt(1, pID);
-            preparedStatement.setInt(2, cID);
+			preparedStatement.setInt(2, cID);
 			ResultSet resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {
-	            int courseID = resultSet.getInt("CourseID");
-	            int personID = resultSet.getInt("PersonID");
-	            System.out.println("CourseID: " + courseID + ", PersonID: " + personID);
+				int courseID = resultSet.getInt("CourseID");
+				int personID = resultSet.getInt("PersonID");
+				System.out.println("CourseID: " + courseID + ", PersonID: " + personID);
 
-	            pDto = new PhanCongDTO(courseID, personID);
-	        }
+				pDto = new PhanCongDTO(courseID, personID);
+			}
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -296,7 +296,7 @@ public class PhanCongDAO implements PhanCongIDAO {
 		List<PersonDTO> personDTOList = new ArrayList<PersonDTO>();
 
 		Connection connection = ConnectDB.getConnection();
-		String sqlQueryString = "SELECT * FROM person";
+		String sqlQueryString = "SELECT * FROM person WHERE HireDate IS NOT NULL";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sqlQueryString);
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -392,14 +392,14 @@ public class PhanCongDAO implements PhanCongIDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {
-	            int courseID = resultSet.getInt("CourseID");
-	            String titleString = resultSet.getString("Title");
-	            int credits = resultSet.getInt("Credits");
-	            int departmentID = resultSet.getInt("DepartmentID");
-	            System.out.println("Id: " + courseID + ", titleString: " + titleString + ", credits: " + credits + ", departmentID: " + departmentID);
+				int courseID = resultSet.getInt("CourseID");
+				String titleString = resultSet.getString("Title");
+				int credits = resultSet.getInt("Credits");
+				int departmentID = resultSet.getInt("DepartmentID");
+				System.out.println("Id: " + courseID + ", titleString: " + titleString + ", credits: " + credits + ", departmentID: " + departmentID);
 
-	            cDto = new courseDTO(courseID, titleString, credits, departmentID);
-	        }
+				cDto = new courseDTO(courseID, titleString, credits, departmentID);
+			}
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
