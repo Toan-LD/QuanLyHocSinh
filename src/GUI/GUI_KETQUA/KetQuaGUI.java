@@ -444,7 +444,6 @@ public class KetQuaGUI extends JPanel {
 				// end
 //				System.out.println(tbMain.getRowCount());
 				// begin edit table
-				TableCellEditor quoteEditor = new QuoteCellEditor();
 				tbMain.requestFocusInWindow();
 				tbMain.editCellAt(0, 3);
 				timer = new Timer(100, new ActionListener() {
